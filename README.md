@@ -1,128 +1,13 @@
-# Book Library System (PHP + MySQL)
+# Laravel 12 - Lab Activity 10: Your Own Lookup Table
 
-This is a simple Book Library System built using PHP and MySQL. It allows users to add and search books using a basic web interface.
+## G1: Which column did you turn into a table, and why that one and not another?
 
----
+I turned the `genre` information into a separate `genres` table and added a `genre_id` foreign key to the `books` table. I chose genre because multiple books can share the same genre, so storing genres separately avoids repeating genre names and makes them easier to manage.
 
-# Features
+## G2: What number did screenshot 6 show, and why exactly that number?
 
-- Add a new book
-- Search books by title or author
-- Simple HTML form interface
-- MySQL database integration
+Screenshot 6 showed **7 queries**: one query retrieved all six books, and six additional queries retrieved each book's genre individually. This happened because I accessed the `genre` relationship without eager loading.
 
----
+## G3: Your belongsTo method is named in the singular. What would break if you made it plural?
 
-# Requirements
-
-- XAMPP or any local server (Apache + MySQL)
-- PHP 7 or higher
-- MySQL / phpMyAdmin
-- Web browser
-
----
-
-# Installation Guide
-
-## 1. Clone the repository
-
-git clone https://github.com/kuyahos/books.git
-
----
-
-## 2. Move project to server directory
-
-If using XAMPP, move the folder to:
-
-htdocs/books
-
----
-
-## 3. Start server
-
-Open XAMPP and start:
-
-- Apache
-- MySQL
-
----
-
-## 4. Create the database
-
-Open phpMyAdmin and run the following SQL commands:
-
-CREATE DATABASE library_db;
-
-USE library_db;
-
-CREATE TABLE books (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    title VARCHAR(255) NOT NULL,
-    author VARCHAR(255) NOT NULL,
-    year INT,
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-);
-
----
-
-## 5. Configure database connection
-
-Open db.php and make sure the settings match your local server:
-
-$host = "localhost";
-$user = "root";
-$password = "";
-$database = "library_db";
-
----
-
-## 6. Run the project
-
-Open your browser and go to:
-
-http://localhost/books/index.php
-
----
-
-# Project Structure
-
-books/
-│
-├── db.php
-├── index.php
-├── add.php
-├── search.php
-├── style.css
-└── README.md
-
----
-
-# How it works
-
-## Add Book
-- Fill out the form in the homepage
-- Click "Add Book"
-- Data will be stored in MySQL database
-
-## Search Book
-- Enter a keyword (title or author)
-- Click "Search"
-- Matching results will be displayed
-
----
-
-# Notes
-
-- This is a basic PHP project for learning purposes
-- No authentication system included
-- No prepared statements (not yet secure for production use)
-
----
-
-# Future Improvements
-
-- Add edit and delete features
-- Add login system
-- Use prepared statements for security
-- Improve UI design
-- Add book cover image upload
+My `Book` model uses the singular relationship method `genre()` because each book belongs to one genre. If I renamed it to `genres()` without updating the other code, calls such as `with('genre')` and `$book->genre` would fail because Laravel would not find the relationship under the original name.
